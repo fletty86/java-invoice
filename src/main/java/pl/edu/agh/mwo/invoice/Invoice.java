@@ -2,11 +2,12 @@ package pl.edu.agh.mwo.invoice;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import pl.edu.agh.mwo.invoice.product.Product;
 
 public class Invoice {
-    private Map<Product, Integer> products = new HashMap<>();
+	private Map<Product, Integer> products = new LinkedHashMap<>();
     private static int nextNumber = 0;
     private final int number = ++nextNumber;
 
@@ -18,7 +19,11 @@ public class Invoice {
         if (product == null || quantity <= 0) {
             throw new IllegalArgumentException();
         }
-        products.put(product, quantity);
+        if (products.containsKey(product)) {
+            products.put(product, products.get(product) + quantity);
+        } else {
+            products.put(product, quantity);
+        }
     }
 
     public BigDecimal getNetTotal() {
