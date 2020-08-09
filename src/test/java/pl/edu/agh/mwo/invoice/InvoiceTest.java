@@ -129,4 +129,19 @@ public class InvoiceTest {
         int number2 = new Invoice().getNumber();
         Assert.assertThat(number1, Matchers.lessThan(number2));
     }
+    
+
+    @Test
+    public void testAddingProductsDuplicate() {
+        Product product = new OtherProduct("Chipsy", new BigDecimal("10"));
+        invoice.addProduct(product);
+        invoice.addProduct(product);
+
+        String printedInvoice = invoice.print();
+
+        String expected = "Faktura nr: " + invoice.getNumber() + "\n" +
+                "Chipsy 2 12.30\n" +
+                "Liczba pozycji: 1";
+        Assert.assertEquals(expected, printedInvoice);
+    }
 }
