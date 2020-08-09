@@ -132,6 +132,31 @@ public class InvoiceTest {
     
 
     @Test
+    public void testPrintingEmptyInvoice() {
+        String printedInvoice = invoice.print();
+
+        String expected = "Faktura nr: " + invoice.getNumber() + "\n" +
+                "Liczba pozycji: 0";
+        Assert.assertEquals(expected, printedInvoice);
+    }
+
+    @Test
+    public void testPrintingInvoiceWithProducts() {
+        // price with tax: 108
+        invoice.addProduct(new DairyProduct("Maslo", new BigDecimal("100")), 3);
+        // price with tax: 12.30
+        invoice.addProduct(new OtherProduct("Chipsy", new BigDecimal("10")));
+
+        String printedInvoice = invoice.print();
+
+        String expected = "Faktura nr: " + invoice.getNumber() + "\n" +
+                "Maslo 3 108.00\n" +
+                "Chipsy 1 12.30\n" +
+                "Liczba pozycji: 2";
+        Assert.assertEquals(expected, printedInvoice);
+    }
+    
+    @Test
     public void testAddingProductsDuplicate() {
         Product product = new OtherProduct("Chipsy", new BigDecimal("10"));
         invoice.addProduct(product);
